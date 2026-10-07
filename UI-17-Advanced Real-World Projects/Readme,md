@@ -1,0 +1,271 @@
+# Real-World Projects
+
+Every project a portfolio needs, distilled to a one-liner + the core layout pattern. Use these as blueprints; each maps back to everything you've built.
+
+---
+
+## 1. Personal portfolio
+**Hero + projects grid + about + contact; single-page, scroll-anchored.**
+```tsx
+<main className="max-w-5xl mx-auto px-4 sm:px-6 space-y-24 py-16">
+  <Hero /><Projects /><About /><Contact />
+</main>
+```
+
+## 2. Blog
+**Index + slug route; typography-driven article pages.**
+```
+app/
+├── blog/page.tsx              → grid of posts
+└── blog/[slug]/page.tsx       → prose article
+```
+```tsx
+<article className="prose prose-slate max-w-3xl mx-auto">
+  <h1>{post.title}</h1>
+  <p>{post.excerpt}</p>
+</article>
+```
+
+## 3. Login page
+**Centered card, email + password, social auth, forgot link.**
+```tsx
+<div className="min-h-screen grid place-items-center p-4 bg-slate-100">
+  <div className="w-full max-w-md rounded-3xl bg-white border border-slate-200 p-6 sm:p-8 shadow-sm">
+    <h1 className="text-2xl font-bold mb-6">Welcome back</h1>
+    {/* fields + button */}
+  </div>
+</div>
+```
+
+## 4. Registration page
+**Same shell as login; more fields + password strength + terms.**
+```tsx
+<form className="space-y-5">
+  <TextField label="Name" />
+  <TextField label="Email" type="email" />
+  <PasswordField label="Password" showStrength />
+  <Checkbox>I agree to the terms</Checkbox>
+  <Button full>Create account</Button>
+</form>
+```
+
+## 5. Pricing page
+**3-tier grid + monthly/yearly toggle + comparison table + FAQ.**
+```tsx
+<div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+  {plans.map((p) => <PricingCard key={p.name} plan={p} yearly={yearly} />)}
+</div>
+```
+
+## 6. Admin dashboard
+**Sidebar + topbar + stats + data tables + activity feed.**
+```tsx
+<div className="min-h-screen flex">
+  <Sidebar />
+  <div className="flex-1 min-w-0 flex flex-col"><Topbar /><main className="p-6 space-y-6">{children}</main></div>
+</div>
+```
+
+## 7. LMS dashboard
+**Course cards + progress bars + lesson list + continue-learning CTA.**
+```tsx
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+  {courses.map((c) => (
+    <div key={c.id} className="rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-sm">
+      <img src={c.cover} className="w-full aspect-video object-cover" />
+      <div className="p-5 space-y-3">
+        <h3 className="font-semibold">{c.title}</h3>
+        <div className="h-2 rounded-full bg-slate-100"><div className="h-full rounded-full bg-indigo-500" style={{ width: `${c.progress}%` }} /></div>
+        <p className="text-xs text-slate-500">{c.progress}% complete</p>
+      </div>
+    </div>
+  ))}
+</div>
+```
+
+## 8. E-commerce interface
+**Product grid + filters sidebar + cart drawer + checkout flow.**
+```tsx
+<div className="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-8">
+  <aside className="hidden md:block space-y-6">{/* filters */}</aside>
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {products.map((p) => <ProductCard key={p.id} product={p} />)}
+  </div>
+</div>
+```
+
+## 9. CRM dashboard
+**Contacts table + pipeline kanban + activity timeline + deal stages.**
+```tsx
+<div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+  {stages.map((s) => (
+    <div key={s.name} className="rounded-2xl bg-slate-50 border border-slate-200 p-3">
+      <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-3">{s.name}</p>
+      <div className="space-y-2">{s.deals.map((d) => <DealCard key={d.id} deal={d} />)}</div>
+    </div>
+  ))}
+</div>
+```
+
+## 10. Analytics dashboard
+**KPI stats + time-series chart + breakdown tables + date range picker.**
+```tsx
+<div className="space-y-6">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">{stats.map((s) => <Stat key={s.label} {...s} />)}</div>
+  <Chart series={revenueSeries} />
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6"><TopPages /><TopSources /></div>
+</div>
+```
+
+## 11. AI chatbot interface
+**Chat thread + input + suggested prompts; sticky composer at bottom.**
+```tsx
+<div className="min-h-screen flex flex-col max-w-3xl mx-auto">
+  <div className="flex-1 overflow-y-auto p-4 space-y-4">
+    {messages.map((m) => (
+      <div key={m.id} className={["max-w-[80%] rounded-2xl px-4 py-2.5 text-sm",
+                                  m.role === "user" ? "ml-auto bg-indigo-600 text-white" : "bg-slate-100 text-slate-800"].join(" ")}>
+        {m.content}
+      </div>
+    ))}
+  </div>
+  <div className="sticky bottom-0 bg-white border-t border-slate-200 p-4 flex gap-2">
+    <input className="flex-1 px-3 py-2 rounded-xl border border-slate-300" placeholder="Ask anything…" />
+    <Button>Send</Button>
+  </div>
+</div>
+```
+
+## 12. AI agent dashboard
+**Agent list + run log + tool calls + status badges; monitor + control.**
+```tsx
+<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+  <aside className="space-y-2">{agents.map((a) => <AgentRow key={a.id} agent={a} />)}</aside>
+  <div className="lg:col-span-2 space-y-4">
+    <RunTimeline runs={runs} />
+    <ToolCallLog calls={calls} />
+  </div>
+</div>
+```
+
+## 13. AI document analyzer UI
+**Upload dropzone + parsed sections + confidence bars + source snippets.**
+```tsx
+<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <div className="rounded-2xl border-2 border-dashed border-slate-300 p-10 text-center">
+    <p className="text-sm text-slate-500">Drop a PDF or click to upload</p>
+  </div>
+  <div className="space-y-4">
+    {sections.map((s) => (
+      <div key={s.id} className="rounded-xl bg-white border border-slate-200 p-4">
+        <div className="flex items-center justify-between mb-2">
+          <p className="text-sm font-medium">{s.title}</p>
+          <span className="text-xs font-medium text-emerald-600">{s.confidence}%</span>
+        </div>
+        <div className="h-1.5 rounded-full bg-slate-100"><div className="h-full rounded-full bg-emerald-500" style={{ width: `${s.confidence}%` }} /></div>
+      </div>
+    ))}
+  </div>
+</div>
+```
+
+## 14. AI SaaS platform
+**Marketing site + auth + app shell + AI workspace + billing + settings.**
+```
+app/
+├── (marketing)/          → landing, pricing, blog
+├── (auth)/               → login, signup
+└── (app)/                → dashboard, workspace, billing, settings
+```
+
+## 15. AI developer portal
+**Docs + API reference + playground + keys + usage + logs.**
+```tsx
+<div className="grid grid-cols-1 lg:grid-cols-[220px_1fr_220px] gap-8">
+  <DocsSidebar />
+  <article className="prose prose-slate max-w-none">{children}</article>
+  <Toc />
+</div>
+```
+
+## 16. Complete production website
+**Marketing + app + auth + docs + API + legal, all with metadata + analytics.**
+```
+app/
+├── (marketing)/          → /, /pricing, /blog, /about
+├── (auth)/               → /login, /signup
+├── (app)/                → /dashboard, /settings
+├── (docs)/               → /docs, /docs/[slug]
+├── api/                  → route handlers
+├── sitemap.ts, robots.ts
+└── layout.tsx
+```
+
+## 17. Responsive design system
+**Mobile-first tokens + primitives + spacing scale + container queries.**
+```ts
+// tailwind.config.ts — semantic tokens
+colors: { brand: "rgb(var(--brand)/<alpha-value>)", surface: "rgb(var(--surface)/<alpha-value>)", ink: "rgb(var(--ink)/<alpha-value>)" }
+```
+
+## 18. Reusable component library
+**`cva` variants + `cn()` merge + barrel exports + docs page.**
+```tsx
+export const Button = ({ variant, size, ...rest }: Props) => (
+  <button className={cn(btn({ variant, size }), className)} {...rest} />
+);
+```
+
+## 19. Dark / light theme
+**Class-based toggle + CSS variables + FOWT-prevention script.**
+```tsx
+<script dangerouslySetInnerHTML={{ __html: `try{var s=localStorage.getItem('theme');var d=s?s==='dark':matchMedia('(prefers-color-scheme:dark)').matches;document.documentElement.classList.toggle('dark',d)}catch(e){}` }} />
+```
+
+## 20. Accessibility
+**Semantic HTML, focus rings, ARIA states, keyboard-first, reduced-motion.**
+```tsx
+<button aria-pressed={on} className="focus-visible:ring-2 focus-visible:ring-brand motion-reduce:transition-none">Toggle</button>
+```
+
+## 21. Performance optimization
+**Server Components by default, `next/image`, `next/font`, streaming + Suspense, ISR.**
+```tsx
+<Suspense fallback={<Skeleton />}>{/* slow section */}</Suspense>
+```
+
+## 22. Production deployment
+**Vercel/Netlify + env vars + analytics + preview deploys + edge caching.**
+```bash
+vercel --prod
+```
+
+---
+
+## 🗺️ Project → Tailwind skill map
+
+| Project | Primary Tailwind concepts |
+|---|---|
+| Portfolio | Layout, typography, responsive grid |
+| Blog | Typography (`prose`), routing |
+| Login / Register | Forms, focus/error states, cards |
+| Pricing | Grid, highlight scales, dark mode |
+| Admin | Sticky sidebar, z-index, tables |
+| LMS | Cards, progress bars, aspect ratios |
+| E-commerce | Product cards, filters, cart drawer |
+| CRM | Kanban flex, drag-friendly columns |
+| Analytics | Charts, stats, tabs |
+| Chatbot | Sticky composer, scroll containers |
+| Agent dashboard | Timelines, logs, badges |
+| Doc analyzer | Dropzone, progress meters |
+| AI SaaS | Full app shell + route groups |
+| Dev portal | 3-column docs layout |
+| Production site | Metadata, sitemap, route groups |
+| Design system | Tokens, variants, container queries |
+| Component library | `cva`, `cn`, barrel exports |
+| Dark mode | CSS vars, class toggle |
+| A11y | ARIA variants, focus-visible, reduced-motion |
+| Performance | RSC, images, fonts, streaming |
+| Deployment | Env, previews, caching |
+
+---
